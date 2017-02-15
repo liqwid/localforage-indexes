@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf8" />
+    <title>Simple localForage-plugin example</title>
+  </head>
+  <body>
+    <script src="../node_modules/localforage/dist/localforage.js"></script>
+    <script src="../dist/localforage-plugin-boilerplate.js"></script>
+    <script>
+      localforage.ready(function() {
+        localforage.pluginMethod().then(function(result) {
+          console.log(result);
+        });
+
+        localforage.setItem('test1', 'value1').then(function() {
+          console.log('setItem(\'test1\', \'value1\')');
+          return localforage.clear();
+        });
+      });
+
+      function time(name, fn) {
+        var t0 = performance.now();
+        console.log('Starting ' + name);
+        var result = fn();
+        if (typeof result.then === 'function') {
+          return result.then(logResult);
+        }
+
+        logResult(result);
+
+        function logResult(result) {
+          var t1 = performance.now();
+          if (result){
+            console.log(name + ' results', result);
+          }
+          console.log('Completed ' + name + ' after ' + (t1 - t0) + ' milliseconds.');
+        }
+
+        return Promise.resolve();
+      }
+    </script>
+
+    <p>
+      Check your console log.
+    </p>
+  </body>
+</html>

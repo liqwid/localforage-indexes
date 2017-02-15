@@ -1,0 +1,53 @@
+{
+  "name": "localForage-indexes",
+  "version": "1.0.0",
+  "description": "plugin for localforage to work with indexes in indexedDb",
+  "homepage": "https://github.com/liqwid/localforage-indexes",
+  "main": "dist/localforage-indexes.js",
+  "jsnext:main": "dist/localforage-indexes.es6.js",
+  "scripts": {
+    "prebuild": "eslint lib",
+    "build": "rollup -c rollup.config.umd.js && rollup -c rollup.config.es6.js",
+    "pretest": "rollup -c rollup.config.test.js",
+    "test": "karma start",
+    "prepublish": "npm run build && npm test",
+    "dev": "watch 'npm run build' lib/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/liqwid/localforage-indexes.git"
+  },
+  "keywords": [
+    "indexes",
+    "indexedDb",
+    "localforage",
+    "plugin"
+  ],
+  "author": "Popov Anton",
+  "licence": "Apache-2.0",
+  "bugs": {
+    "url": "http://github.com/liqwid/localforage-indexes/issues"
+  },
+  "devDependencies": {
+    "babel-eslint": "^6.0.4",
+    "babel-preset-es2015-rollup": "^1.1.1",
+    "eslint": "^2.8.0",
+    "karma": "^1.4.1",
+    "karma-chai": "^0.1.0",
+    "karma-chrome-launcher": "^2.0.0",
+    "karma-firefox-launcher": "^1.0.0",
+    "karma-ie-launcher": "^1.0.0",
+    "karma-opera-launcher": "^1.0.0",
+    "karma-safari-launcher": "^1.0.0",
+    "mocha": "^2.4.5",
+    "requirejs": "^2.2.0",
+    "rollup": "^0.26.1",
+    "rollup-plugin-babel": "^2.4.0",
+    "rollup-plugin-multi-entry": "^1.2.0",
+    "source-map-support": "^0.4.0",
+    "watch": "^1.0.1"
+  },
+  "dependencies": {
+    "localforage": ">=1.4.0"
+  }
+}
