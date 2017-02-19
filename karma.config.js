@@ -4,6 +4,10 @@
 module.exports = function(config) {
   config.set({
 
+    preprocessors: {
+      '**/*.js': ['sourcemap']
+    },
+
     // base path that will be used to resolve all patterns (eg. files, exclude)
     basePath: '',
 
@@ -50,12 +54,12 @@ module.exports = function(config) {
 
 
     // enable / disable watching file and executing tests whenever any file changes
-    autoWatch: false,
+    autoWatch: true,
 
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: ['Chrome', 'Firefox', 'Safari', 'Opera', 'IE'],
+    browsers: ['Chrome', 'Firefox'],
 
 
     // Continuous Integration mode

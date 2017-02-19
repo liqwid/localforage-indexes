@@ -1,11 +1,18 @@
 import babel from 'rollup-plugin-babel';
 import multiEntry from 'rollup-plugin-multi-entry';
+import nodeResolve from 'rollup-plugin-node-resolve';
+import commonJs from 'rollup-plugin-commonjs';
 
 export default {
-  entry: 'test/**/*_test.js',
-  plugins: [babel(), multiEntry()],
-  format: 'cjs',
-  intro: 'require("source-map-support").install();',
+  entry: 'test/**/*_scenarios.js',
+  plugins: [
+    commonJs({ include: 'node_modules/**' }),
+    babel({ exclude: 'node_modules/**' }),
+    multiEntry(),
+    nodeResolve()
+  ],
+  format: 'iife',
+  moduleName: 'tests',
   dest: 'build/test-bundle.js',
   sourceMap: true
 };

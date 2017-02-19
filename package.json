@@ -9,7 +9,8 @@
     "prebuild": "eslint lib",
     "build": "rollup -c rollup.config.umd.js && rollup -c rollup.config.es6.js",
     "pretest": "rollup -c rollup.config.test.js",
-    "test": "karma start",
+    "test": "karma start karma.config.js",
+    "test_dev": "watch 'rollup -c rollup.config.test.js' test/ lib/",
     "prepublish": "npm run build && npm test",
     "dev": "watch 'npm run build' lib/"
   },
@@ -26,7 +27,7 @@
   "author": "Popov Anton",
   "licence": "Apache-2.0",
   "bugs": {
-    "url": "http://github.com/liqwid/localforage-indexes/issues"
+    "url": "https://github.com/liqwid/localforage-indexes/issues"
   },
   "devDependencies": {
     "babel-eslint": "^6.0.4",
@@ -39,11 +40,14 @@
     "karma-ie-launcher": "^1.0.0",
     "karma-opera-launcher": "^1.0.0",
     "karma-safari-launcher": "^1.0.0",
+    "karma-sourcemap-loader": "^0.3.7",
     "mocha": "^2.4.5",
     "requirejs": "^2.2.0",
     "rollup": "^0.26.1",
     "rollup-plugin-babel": "^2.4.0",
+    "rollup-plugin-commonjs": "^7.0.0",
     "rollup-plugin-multi-entry": "^1.2.0",
+    "rollup-plugin-node-resolve": "^2.0.0",
     "source-map-support": "^0.4.0",
     "watch": "^1.0.1"
   },
