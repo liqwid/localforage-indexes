@@ -1,4 +1,4 @@
-import { extendPrototypeResult as localforage } from '../lib/localForage-create-index.js';
+import { extendPrototypeResult as localforage } from '../lib/localforage-indexes.js';
 import * as tests from './tests.js';
 
 var storeName = 'INDEXES_TEST'
