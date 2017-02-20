@@ -1,5 +1,5 @@
 import { extendPrototypeResult as localforage } from '../lib/localforage-indexes.js';
-import * as tests from './tests.js';
+import * as utils from './utils.js';
 
 var storeName = 'INDEXES_TEST'
 
@@ -9,17 +9,16 @@ var testLF = localforage.createInstance({
   storeName   : storeName
 });
 
-describe('Case 1: store has no index', () => {
-  describe('Case 1.1: testing createIndex method', () => {
-    beforeEach(tests.cleanIndex.bind(null, testLF));
+describe('Case 1: store has no index\n', () => {
+  describe('Case 1.1: testing createIndex method\n', () => {
+    beforeEach(utils.cleanIndex.bind(null, testLF));
 
-
-    tests.isPromise(
+    utils.isPromise(
       testLF.createIndex.bind(testLF, 'TEST_INDEX', 'TEST_KEYPATH'),
       'createIndex call'
     );
 
-    it('creates index with correct', (done) => {
+    it('creates index with correct parameters', (done) => {
       var indexName = 'TEST_INDEX',
           keyPath   = 'TEST_KEYPATH',
           options   = { multiEntry: true, unique: true };
@@ -41,4 +40,35 @@ describe('Case 1: store has no index', () => {
       }).catch(done);
     });
   });
-})
+
+  describe('Case 1.2: testing updateIndex and deleteIndex method for warnings\n', () => {
+    beforeEach(utils.cleanIndex.bind(null, testLF));
+    beforeEach(sinon.spy(console, 'warn'));
+
+    it('deleting non-existing index logs warning', (done) => {
+      var indexName = 'TEST_INDEX';
+
+      testLF.deleteIndex(indexName)
+      .then(() => {
+        assert(console.warn.calledOnce, 'warning not called');
+        done();
+      },
+      (err) => {
+        throw err;
+      }).catch(done);
+    });
+
+    it('updating non-existing index logs warning', (done) => {
+      var indexName = 'TEST_INDEX';
+
+      testLF.updateIndex(indexName)
+      .then(() => {
+        assert(console.warn.calledOnce, 'warning not called');
+        done();
+      },
+      (err) => {
+        throw err;
+      }).catch(done);
+    });
+  });
+});
