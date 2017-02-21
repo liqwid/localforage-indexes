@@ -4,11 +4,10 @@ import nodeResolve from 'rollup-plugin-node-resolve';
 import commonJs from 'rollup-plugin-commonjs';
 
 export default {
-  entry: 'test/**/*_scenarios.js',
+  entry: 'test/index.js',
   plugins: [
     commonJs({ include: 'node_modules/**' }),
     babel({ exclude: 'node_modules/**' }),
-    multiEntry(),
     nodeResolve()
   ],
   format: 'iife',
