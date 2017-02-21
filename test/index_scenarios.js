@@ -6,11 +6,54 @@ export default function(testLF, storeName, utils) {
         keyPath   = 'TEST_KEYPATH',
         options   = { multiEntry: true, unique: true };
 
-    describe('Case 2.1: testing deleteIndex method\n', () => {
-      beforeEach((done) => {
-        testLF.createIndex(indexName, keyPath, options)
-        .then(() => done(), () => done());
+    describe('Case 2.1: testing getIndex method\n', () => {
+      before(utils.createNewIndex.bind(null, testLF));
+      after(utils.cleanIndex.bind(null, testLF));
+
+      utils.isPromise(
+        testLF.getIndex.bind(testLF, 'TEST_INDEX'),
+        'getIndex call'
+      );
+
+      it('gets index', (done) => {
+        testLF.getIndex(indexName)
+        .then((index) => {
+          utils.testIndex(index, keyPath, options);
+          done();
+        },
+        (err) => {
+          throw err;
+        }).catch(done);
       });
+    });
+
+    describe('Case 2.2: testing updateIndex method\n', () => {
+      before(utils.createNewIndex.bind(null, testLF));
+      after(utils.cleanIndex.bind(null, testLF));
+
+      utils.isPromise(
+        testLF.updateIndex.bind(testLF, 'TEST_INDEX'),
+        'updateIndex call'
+      );
+
+      var newKeyPath = 'NEW_TEST_KEYPATH';
+      var newOptions = { multiEntry: false, unique: false };
+
+      it('updates index', (done) => {
+        testLF.updateIndex(indexName, newKeyPath, newOptions)
+        .then((index) => {
+          utils.testIndex(index, newKeyPath, newOptions);
+          done();
+        },
+        (err) => {
+          throw err;
+        }).catch(done);
+      });
+    });
+
+    describe('Case 2.3: testing deleteIndex method\n', () => {
+      beforeEach(utils.createNewIndex.bind(null, testLF));
+      after(utils.cleanIndex.bind(null, testLF));
 
       utils.isPromise(
         testLF.deleteIndex.bind(testLF, 'TEST_INDEX'),
@@ -35,44 +78,9 @@ export default function(testLF, storeName, utils) {
       });
     });
 
-    describe('Case 2.2: testing updateIndex method\n', () => {
-      before((done) =>
-        testLF.createIndex(indexName, keyPath, options)
-        .then(() => done(), () => done())
-      );
+    describe('Case 2.4: testing createIndex method for warnings\n', () => {
+      beforeEach(utils.createNewIndex.bind(null, testLF));
       after(utils.cleanIndex.bind(null, testLF));
-
-      utils.isPromise(
-        testLF.updateIndex.bind(testLF, 'TEST_INDEX'),
-        'updateIndex call'
-      );
-
-      keyPath = 'NEW_TEST_KEYPATH';
-      options = { multiEntry: false, unique: false };
-
-      it('updates index', (done) => {
-        testLF.updateIndex(indexName, keyPath, options)
-        .then(() => {
-          var index = testLF._dbInfo.db.transaction(storeName, 'readonly')
-            .objectStore(storeName).index(indexName);
-
-          assert.ok(index, 'index was not created during update');
-          assert.strictEqual(index.keyPath, keyPath, 'incorrect keypath');
-          assert.strictEqual(index.multiEntry, options.multiEntry, 'incorrect multiEntry option');
-          assert.strictEqual(index.unique, options.unique, 'incorrect unique option');
-          done();
-        },
-        (err) => {
-          throw err;
-        }).catch(done);
-      });
-    });
-
-    describe('Case 2.3: testing createIndex method for warnings\n', () => {
-      beforeEach((done) =>
-        testLF.createIndex(indexName, keyPath, options)
-        .then(() => done(), () => done())
-      );
 
       it('creating existing index logs warning', (done) => {
         testLF.createIndex(indexName, keyPath, options)

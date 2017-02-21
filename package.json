@@ -1,5 +1,5 @@
 {
-  "name": "localForage-indexes",
+  "name": "localforage-indexes",
   "version": "1.0.0",
   "description": "plugin for localforage to work with indexes in indexedDb",
   "homepage": "https://github.com/liqwid/localforage-indexes",
@@ -11,7 +11,7 @@
     "pretest": "rollup -c rollup.config.test.js",
     "test": "karma start karma.config.js",
     "test_dev": "watch 'rollup -c rollup.config.test.js' test/ lib/",
-    "prepublish": "npm run build && npm test",
+    "prepublish": "npm run build && npm run pretest && karma start karma.config.js --single-run",
     "dev": "watch 'npm run build' lib/"
   },
   "repository": {
