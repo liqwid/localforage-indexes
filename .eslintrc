@@ -16,6 +16,7 @@
     "no-console": 0
   },
   "globals": {
+    "IDBDatabase": true,
     "localforage": true,
     "Promise": true,
     "console": true,

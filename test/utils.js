@@ -26,3 +26,22 @@ export function cleanIndex(localforage, done) {
       done()
     );
 }
+
+export function createNewIndex(localforage, done) {
+  console.log('Creating new test index...');
+
+  localforage.createIndex('TEST_INDEX', 'TEST_KEYPATH', { multiEntry: true, unique: true })
+  .then(() => {
+    console.log('Index cleaned');
+    done();
+  }, () =>
+    done()
+  );
+}
+
+export function testIndex(index, keyPath, options) {
+  assert.ok(index, 'index was not created');
+  assert.strictEqual(index.keyPath, keyPath, 'incorrect keypath');
+  assert.strictEqual(index.multiEntry, options.multiEntry, 'incorrect multiEntry option');
+  assert.strictEqual(index.unique, options.unique, 'incorrect unique option');
+}
