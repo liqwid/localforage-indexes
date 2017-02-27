@@ -1,6 +1,6 @@
 {
   "name": "localforage-indexes",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "plugin for localforage to work with indexes in indexedDb",
   "homepage": "https://github.com/liqwid/localforage-indexes",
   "main": "dist/localforage-indexes.js",
