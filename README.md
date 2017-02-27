@@ -132,5 +132,5 @@ forage.createIndex('newIndex', 'KEYPATH')
 
 ### Links
 
-[GitHub](https://github.com/liqwid/localforage-indexes)
-[NPM](https://www.npmjs.com/package/localforage-indexes)
+* [GitHub](https://github.com/liqwid/localforage-indexes)
+* [NPM](https://www.npmjs.com/package/localforage-indexes)
