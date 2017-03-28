@@ -42,7 +42,7 @@ localforage.createIndex('LF_INDEX', 'INDEXED_FIELD', (err, index) => {
 
 ### getIndex
 
-`getIndex(indexName)`
+`getIndex(indexName[, callback])`
 
 Updates existing index on the specified storage
 Supports promises and callbacks
@@ -69,7 +69,7 @@ localforage.getIndex('LF_INDEX', (err, index) => {
 
 ### updateIndex
 
-`updateIndex(indexName, newKeyPath, newOptions)`
+`updateIndex(indexName, keyPath[, options[, callback]])`
 
 Updates existing index on the specified storage
 Used to change keyPath or options of an index
@@ -97,7 +97,7 @@ localforage.updateIndex('LF_INDEX', 'ANOTHER_INDEXED_FIELD', (err, index) => {
 
 ### deleteIndex
 
-`deleteIndex(indexName)`
+`deleteIndex(indexName[, callback])`
 
 Updates existing index on the specified storage
 Supports promises and callbacks
