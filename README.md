@@ -15,10 +15,12 @@ Plugin for localforage to work with indexes in indexedDb
 
 ### createIndex
 
-`createIndex(indexName, keyPath, options)`
+`createIndex(indexName, keyPath[, options[, callback]])`
 
 Creates an index on the specified storage
-Returns a `Promise` which resolves with new index
+Supports promises and callbacks
+
+Promise case:
 
 ```js
 localforage.createIndex('LF_INDEX', 'INDEXED_FIELD')
@@ -30,12 +32,22 @@ localforage.createIndex('LF_INDEX', 'INDEXED_FIELD')
 });
 ```
 
+Callback case:
+
+```js
+localforage.createIndex('LF_INDEX', 'INDEXED_FIELD', (err, index) => {
+  // check error here
+});
+```
+
 ### getIndex
 
 `getIndex(indexName)`
 
 Updates existing index on the specified storage
-Returns a `Promise` which resolves with index
+Supports promises and callbacks
+
+Promise case:
 
 ```js
 localforage.getIndex('LF_INDEX')
@@ -47,16 +59,26 @@ localforage.getIndex('LF_INDEX')
 });
 ```
 
+Callback case:
+
+```js
+localforage.getIndex('LF_INDEX', (err, index) => {
+  // check error here
+})
+```
+
 ### updateIndex
 
 `updateIndex(indexName, newKeyPath, newOptions)`
 
 Updates existing index on the specified storage
-Returns a `Promise` which resolves with updated index
 Used to change keyPath or options of an index
+Supports promises and callbacks
+
+Promise case:
 
 ```js
-localforage.createIndex('LF_INDEX', 'ANOTHER_INDEXED_FIELD')
+localforage.updateIndex('LF_INDEX', 'ANOTHER_INDEXED_FIELD')
 .then((index) => {
   // index updated
 })
@@ -65,12 +87,22 @@ localforage.createIndex('LF_INDEX', 'ANOTHER_INDEXED_FIELD')
 });
 ```
 
+Callback case:
+
+```js
+localforage.updateIndex('LF_INDEX', 'ANOTHER_INDEXED_FIELD', (err, index) => {
+  // check error here
+});
+```
+
 ### deleteIndex
 
 `deleteIndex(indexName)`
 
 Updates existing index on the specified storage
-Returns a `Promise` which resolves when index is deleted
+Supports promises and callbacks
+
+Promise case:
 
 ```js
 localforage.deleteIndex('LF_INDEX')
@@ -80,6 +112,14 @@ localforage.deleteIndex('LF_INDEX')
 .catch((err) => {
   //...
 });
+```
+
+Callback case:
+
+```js
+localforage.deleteIndex('LF_INDEX', (err, index) => {
+  // check error here
+})
 ```
 
 ### Methods' arguments
@@ -92,8 +132,14 @@ Arguments are the same as of vanilla indexedDb API
 `options`:
   * `multiEntry` - will make an effect if keyPath resolves to an array. If true multiple index entry will be created for each array element, if false single instance is created. *Default: false*
   * `unique` - if set to true removes duplicates from index. *Default: false*
+`callback` - Callback function. If one is provided method call won't return a promise. Instead a callback will be called when the indexedDB transaction is finished.
 
 ### Usage
+
+#### Warning: Firefox and Safari do not support usage of Promises with indexedDB's transactions
+Any transaction passed through native promise will get destroyed.
+Firefox/Safari transactions can still be used with callbacks.
+
 Intended to use only with indexedDb. Custom driver to be compatible with indexes must inherit from localforage's indexdDb(asyncStorage) driver.
 
 ```js

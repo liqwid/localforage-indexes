@@ -15,6 +15,11 @@ export default function(testLF, storeName, utils) {
         'getIndex call'
       );
 
+      utils.callbackResolves(
+        testLF.getIndex.bind(testLF, 'TEST_INDEX'),
+        'getIndex call'
+      );
+
       it('gets index', (done) => {
         testLF.getIndex(indexName)
         .then((index) => {
@@ -32,7 +37,12 @@ export default function(testLF, storeName, utils) {
       after(utils.cleanIndex.bind(null, testLF));
 
       utils.isPromise(
-        testLF.updateIndex.bind(testLF, 'TEST_INDEX'),
+        testLF.updateIndex.bind(testLF, 'TEST_INDEX', 'NEW_TEST_KEYPATH'),
+        'updateIndex call'
+      );
+
+      utils.callbackResolves(
+        testLF.updateIndex.bind(testLF, 'TEST_INDEX', 'NEW_TEST_KEYPATH'),
         'updateIndex call'
       );
 
@@ -60,6 +70,12 @@ export default function(testLF, storeName, utils) {
         'deleteIndex call'
       );
 
+      it('deleteIndex should return no error inside callback', (done) => {
+        testLF.deleteIndex(indexName, (err, result) => {
+          done(assert.isNotOk(err, 'returns error'));
+        })
+      });
+
       it('deletes index', (done) => {
         testLF.deleteIndex(indexName)
         .then(() => {
@@ -78,18 +94,23 @@ export default function(testLF, storeName, utils) {
       });
     });
 
-    describe('Case 2.4: testing createIndex method for warnings\n', () => {
+    describe('Case 2.4: testing createIndex method for rejection\n', () => {
       beforeEach(utils.createNewIndex.bind(null, testLF));
       after(utils.cleanIndex.bind(null, testLF));
 
-      it('creating existing index logs warning', (done) => {
+      utils.callbackError(
+        testLF.createIndex.bind(testLF, 'TEST_INDEX', 'TEST_KEYPATH'),
+        'createIndex call'
+      );
+
+      it('creating existing index promise rejects with error', (done) => {
         testLF.createIndex(indexName, keyPath, options)
         .then(() => {
-          assert(console.warn.calledOnce, 'warning not called');
-          done();
+          done('promise was not rejected');
         },
         (err) => {
-          throw err;
+          assert(err instanceof Error, 'promise reject not return error');
+          done();
         }).catch(done);
       });
     });
