@@ -10,6 +10,11 @@ export default function(testLF, storeName, utils) {
         'createIndex call'
       );
 
+      utils.callbackResolves(
+        testLF.createIndex.bind(testLF, 'TEST_INDEX', 'TEST_KEYPATH'),
+        'createIndex call'
+      );
+
       it('creates index with correct parameters', (done) => {
         var indexName = 'TEST_INDEX',
             keyPath   = 'TEST_KEYPATH',
@@ -28,41 +33,58 @@ export default function(testLF, storeName, utils) {
 
     describe('Case 1.2: testing updateIndex, getIndex and deleteIndex method for warnings\n', () => {
       beforeEach(utils.cleanIndex.bind(null, testLF));
-      before(sinon.spy(console, 'warn'));
 
-      it('requesting for non-existing index reject with an error', (done) => {
+      utils.callbackError(
+        testLF.getIndex.bind(testLF, 'TEST_INDEX'),
+        'getIndex call'
+      );
+
+      it('requesting for non-existing index rejects with an error', (done) => {
         var indexName = 'TEST_INDEX';
 
         testLF.getIndex(indexName)
         .then(() => {
-          assert(false, 'resolved without error');
+          done('promise was not rejected');
         },
-        (err) => done());
+        (err) => {
+          assert(err instanceof Error, 'promise reject not return error');
+          done();
+        }).catch(done);
       });
 
-      it('deleting non-existing index logs warning', (done) => {
+      utils.callbackError(
+        testLF.deleteIndex.bind(testLF, 'TEST_INDEX'),
+        'deleteIndex call'
+      );
+
+      it('deleting non-existing index rejects with an error', (done) => {
         var indexName = 'TEST_INDEX';
 
         testLF.deleteIndex(indexName)
         .then(() => {
-          assert(console.warn.calledOnce, 'warning not called');
-          done();
+          done('promise was not rejected');
         },
         (err) => {
-          throw err;
+          assert(err instanceof Error, 'promise reject not return error');
+          done();
         }).catch(done);
       });
 
-      it('updating non-existing index logs warning', (done) => {
+      utils.callbackError(
+        testLF.updateIndex.bind(testLF, 'TEST_INDEX', 'NEW_TEST_KEYPATH'),
+        'updateIndex call'
+      );
+
+      it('updating non-existing index rejects with an error', (done) => {
         var indexName = 'TEST_INDEX';
 
-        testLF.updateIndex(indexName)
+        testLF.updateIndex(indexName, 'NEW_TEST_KEYPATH')
         .then(() => {
-          assert(console.warn.calledOnce, 'warning not called');
-          done();
+          done('promise was not rejected');
         },
         (err) => {
-          throw err;
+          assert(err instanceof Error, 'promise reject not return error');
+          done();
         }).catch(done);
       });
     });
